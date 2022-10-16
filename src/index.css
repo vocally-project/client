@@ -3,13 +3,25 @@
 }
 
 .custom-button:hover {
-    background: purple  !important;
+    background: #383131  !important;
+}
+
+.custom-button:disabled,
+.custom-button[disabled]{
+  border: 1px solid #999999;
+  font-weight: bold;
+  background-color: #8c7878;
 }
 
 .inputRounded .MuiOutlinedInput-root {
     border-radius: 28px;
     color: #efefef;
     border: 1px solid white;
+}
+
+.inputRounded .MuiFormHelperText-root {
+    color: gray;
+    margin-bottom: 0px;
 }
 
 .MuiFormLabel-root {

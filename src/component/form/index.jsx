@@ -34,13 +34,29 @@ const Form = () => {
             setError({ ...error, name: "name is required" });
             return true;
         };
+        if (blurEmail && !email) {
+            setError({ ...name, email: "email is required" });
+            return true;
+        };
+        if (blurEmail && email && !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
+            setError({ ...name, email: "invalid email" });
+            return true;
+        };
         return false;
-    }
+    };
 
     const handleSubmit = async () => {
         try {
-            const response = await createUser(email, name)
-            console.log(response);
+            if (hasError()) {
+                console.log(error);
+            } else {
+                const response = await createUser(email, name)
+                if (response.data.status === 200) {
+                    setError({ name: "", email: "" });
+                    console.log(response);
+                }
+                console.log(response);
+            }
         } catch (err) {
             console.log(err)
         }
@@ -60,7 +76,7 @@ const Form = () => {
                     value={name}
                     onBlur={handleNameBlur}
                     onChange={handleNameChange}
-                    error={"nikhil"}
+                    error={error.name}
                 />
                 <CustomTextField
                     placeholder="Enter your Email"
@@ -71,7 +87,7 @@ const Form = () => {
                 />
                 <br />
                 <br />
-                <ButtonComponent size="large" fullWidth variant="outlined" onClick={hasError && handleSubmit} name="submit"  />
+                <ButtonComponent size="large" disabled={!(blurEmail && blurName)} fullWidth variant="outlined" onClick={handleSubmit} name="submit"  />
             </Box>
         </Box>
     )
