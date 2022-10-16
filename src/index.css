@@ -1,0 +1,46 @@
+.clear-shadow {
+    box-shadow: none !important;
+}
+
+.custom-button:hover {
+    background: purple  !important;
+}
+
+.inputRounded .MuiOutlinedInput-root {
+    border-radius: 28px;
+    color: #efefef;
+    border: 1px solid white;
+}
+
+.MuiFormLabel-root {
+    color: #efefef !important;
+}
+
+.form-media {
+    margin-left: 10%;
+}
+
+@media screen and (max-width: 700px) {
+    .break-small {
+        display: none !important;
+    }
+    .full-width { 
+        width: 100% !important;
+    }
+    .align-center-media {
+        margin-top: 20px !important;
+        text-align: center !important;
+    }
+    .form-media {
+        margin: 5%;
+        padding: 5%;
+    }
+    .align-center { 
+        text-align: center !important;
+    }
+    .space-around-flex-media {
+        display: flex !important;
+        justify-content: space-around !important;
+        margin-top: 10px;
+    }
+}

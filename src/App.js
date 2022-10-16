@@ -1,11 +1,13 @@
+import { CssBaseline } from "@mui/material";
 import { LandingPage } from "./pages";
-
+import './index.css';
 
 function App() {
   return (
-    <div>
+    <>
+      <CssBaseline />
       <LandingPage />
-    </div>
+    </>
   );
 }
 
