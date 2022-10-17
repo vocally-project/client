@@ -43,34 +43,39 @@ const Form = () => {
 
     const hasError = () => {
         if (blurName && !name) {
-            setError({ ...error, name: "name is required" });
+            setError({ ...error, name: "name is required" });   
+            setSnackbar({ ...snackbar, severity: "error", message: "name is required" })
             return true;
         };
         if (blurEmail && !email) {
-            setError({ ...name, email: "email is required" });
+            setError({ ...error, email: "email is required" });
+            setSnackbar({ ...snackbar, severity: "error", message: "email is required" });
             return true;
         };
         if (blurEmail && email && !/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
-            setError({ ...name, email: "invalid email" });
+            setError({ ...error, email: "invalid email" });
+            setSnackbar({ ...snackbar, severity: "error", message: "Invalid email" });
             return true;
         };
         return false;
     };
+    
+    console.log("Component rendered ",error);
 
     const handleSubmit = async () => {
         try {
-            const errors = hasError()
-            if (errors) {
+            const errorExists = hasError()
+            if (errorExists) {
                 setOpen(true);
-                setSnackbar({ severity: "error", message: error.name ? error.name : error.email })
             } else {
                 const response = await createUser(email, name)
                 if (response.data.status === 200) {
                     setSnackbar({ severity: "success", message: response.data.message })
                     setOpen(true)
+                } else {
+                    setOpen(true)
+                    setSnackbar({ severity: "error", message: response.data.message })
                 }
-                setOpen(true)
-                setSnackbar({ severity: "error", message: response.data.message })
             }
         } catch (err) {
             setOpen(true)
@@ -111,7 +116,7 @@ const Form = () => {
                     name="submit"
                     variant="outlined"
                     onClick={handleSubmit}
-                    disabled={!(blurEmail && blurName)} />
+                    disabled={!(email&&name)} />
             </Box>
         </Box>
     )
