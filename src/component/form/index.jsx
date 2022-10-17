@@ -44,7 +44,6 @@ const Form = () => {
     const hasError = () => {
         if (blurName && !name) {
             setError({ ...error, name: "name is required" });
-            console.log("inside has error", error)
             return true;
         };
         if (blurEmail && !email) {
