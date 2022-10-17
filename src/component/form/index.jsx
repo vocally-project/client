@@ -44,13 +44,14 @@ const Form = () => {
     const hasError = () => {
         if (blurName && !name) {
             setError({ ...error, name: "name is required" });
+            console.log("inside has error", error)
             return true;
         };
         if (blurEmail && !email) {
             setError({ ...name, email: "email is required" });
             return true;
         };
-        if (blurEmail && email && !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
+        if (blurEmail && email && !/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
             setError({ ...name, email: "invalid email" });
             return true;
         };
@@ -59,7 +60,8 @@ const Form = () => {
 
     const handleSubmit = async () => {
         try {
-            if (hasError()) {
+            const errors = hasError()
+            if (errors) {
                 setOpen(true);
                 setSnackbar({ severity: "error", message: error.name ? error.name : error.email })
             } else {
@@ -71,7 +73,6 @@ const Form = () => {
                 setOpen(true)
                 setSnackbar({ severity: "error", message: response.data.message })
             }
-            setError({ name: "", email: "" });
         } catch (err) {
             setOpen(true)
             setSnackbar({ severity: "error", message: "Server error" })
