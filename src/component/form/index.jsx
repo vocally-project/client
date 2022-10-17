@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Box, Typography } from "@mui/material";
 
-import { CustomTextField, ButtonComponent } from "../../component";
+import { CustomTextField, ButtonComponent, CustomizedSnackbars } from "../../component";
 import { createUser } from "../../apis";
 
 const Form = () => {
@@ -9,9 +9,21 @@ const Form = () => {
     const [email, setEmail] = useState();
     const [blurName, setBlurName] = useState(false);
     const [blurEmail, setBlurEmail] = useState(false);
+    const [open, setOpen] = useState(false);
+    const [snackbar, setSnackbar] = useState({
+        message: "", severity: ""
+    });
     const [error, setError] = useState({
         name: "", email: ""
     });
+  
+    const handleClose = (event, reason) => {
+      if (reason === 'clickaway') {
+        setOpen(false)
+        return;
+      }
+      setOpen(false);
+    };
 
     const handleNameChange = (event) => {
         setName(event.target.value);
@@ -48,22 +60,28 @@ const Form = () => {
     const handleSubmit = async () => {
         try {
             if (hasError()) {
-                console.log(error);
+                setOpen(true);
+                setSnackbar({ severity: "error", message: error.name ? error.name : error.email })
             } else {
                 const response = await createUser(email, name)
                 if (response.data.status === 200) {
-                    setError({ name: "", email: "" });
-                    console.log(response);
+                    setSnackbar({ severity: "success", message: response.data.message })
+                    setOpen(true)
                 }
-                console.log(response);
+                setOpen(true)
+                setSnackbar({ severity: "error", message: response.data.message })
             }
+            setError({ name: "", email: "" });
         } catch (err) {
-            console.log(err)
+            setOpen(true)
+            setSnackbar({ severity: "error", message: "Server error" })
+            setError({ name: "", email: "" });
         }
     };
 
     return (
         <Box className="form-media">
+            <CustomizedSnackbars open={open} handleClose={handleClose} severity={snackbar.severity} message={snackbar.message} />
             <Typography className="align-center-media" marginTop="5vh" color="#dfdfdf" fontWeight="bold" variant="h3">
                 Vehicle Maintainance From The Comfort of Your Home
             </Typography>
@@ -72,22 +90,28 @@ const Form = () => {
             </Typography>
             <Box marginTop="20px" className="full-width" width="60%">
                 <CustomTextField
-                    placeholder="Enter your Name"
                     value={name}
+                    error={error.name}
                     onBlur={handleNameBlur}
                     onChange={handleNameChange}
-                    error={error.name}
+                    placeholder="Enter your Name"
                 />
                 <CustomTextField
-                    placeholder="Enter your Email"
                     value={email}
+                    error={error.email}
                     onBlur={handleEmailBlur}
                     onChange={handleEmailChange}
-                    error={error.email}
+                    placeholder="Enter your Email"
                 />
                 <br />
                 <br />
-                <ButtonComponent size="large" disabled={!(blurEmail && blurName)} fullWidth variant="outlined" onClick={handleSubmit} name="submit"  />
+                <ButtonComponent
+                    fullWidth
+                    size="large"
+                    name="submit"
+                    variant="outlined"
+                    onClick={handleSubmit}
+                    disabled={!(blurEmail && blurName)} />
             </Box>
         </Box>
     )

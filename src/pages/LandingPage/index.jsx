@@ -1,6 +1,5 @@
 import React from "react";
-import { Footer, Navbar, SecondForm } from '../../component'
-import { Form } from "../../component";
+import { Footer, Navbar, SecondForm, Form } from '../../component'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { purple } from '@mui/material/colors';
 import { Box } from "@mui/system";
